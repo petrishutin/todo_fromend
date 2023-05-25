@@ -3,21 +3,26 @@ import AppNavbar from "@/components/AppNavbar.vue";
 
 export default {
   components: {AppNavbar},
+  setup() {
+    return {
+    }
+  }
 }
 </script>
 
 <template>
   <dive>
-    <AppNavbar class="fixed-top"></AppNavbar>
+    <AppNavbar class="fixed-top"/>
     <div class="body mt-5">
-      <h3>Some Data here</h3>
-      <a>DATA!!!</a>
+      <h3>About Todo App</h3>
+      <a>Description here</a>
     </div>
   </dive>
 </template>
 
 <style scoped>
 .body {
-  padding-top: 20px;
+  padding-top: 30px;
+  margin: 10px;
 }
 </style>
