@@ -11,13 +11,13 @@ export default {
 </script>
 
 <template>
-  <dive>
+  <div>
     <AppNavbar class="fixed-top"/>
     <div class="body mt-5">
       <h3>About Todo App</h3>
       <a>Description here</a>
     </div>
-  </dive>
+  </div>
 </template>
 
 <style scoped>

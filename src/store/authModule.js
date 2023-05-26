@@ -24,13 +24,15 @@ export const authModule = {
         if (response.status === 201) {
           try {
             const data = new FormData();
-            for (const key in credentials) {
-              data.append(key, credentials[key]);
-            }
+            data.append('username', credentials.email);
+            data.append('password', credentials.password1);
             const response = await axios.post('http://localhost:8000/api/v1/login', data);
             if (response.status === 200) {
               commit('setToken', `Bearer ${response.data.access_token}`);
               commit('setLoggedIn', true);
+              if (credentials.callback && typeof credentials.callback === 'function') {
+                credentials.callback();
+              }
             } else {
               alert(response.data.message);
             }
@@ -47,13 +49,16 @@ export const authModule = {
     async login({commit}, credentials) {
       try {
         const data = new FormData();
-        for (const key in credentials) {
-          data.append(key, credentials[key]);
-        }
+        data.append('username', credentials.username);
+        data.append('password', credentials.password);
         const response = await axios.post('http://localhost:8000/api/v1/login', data);
         if (response.status === 200) {
           commit('setToken', `Bearer ${response.data.access_token}`);
           commit('setLoggedIn', true);
+          console.warn(credentials.callback)
+          if (credentials.callback && typeof credentials.callback === 'function') {
+            credentials.callback();
+          }
         } else {
           alert(response.data.message);
         }

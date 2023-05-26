@@ -2,14 +2,14 @@ import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
-import components from '@/components/UI'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap'
 import '@/assets/style.css'
+import componets from '@/components/UI'
 
 const app = createApp(App)
 
-components.forEach(component => {
+componets.forEach(component => {
     app.component(component.name, component)
 })
 

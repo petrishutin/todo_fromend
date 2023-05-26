@@ -10,7 +10,7 @@ export default {
       email: '',
       password1: '',
       password2: '',
-      isLoginMode: true, // Флаг, определяющий режим: логин или регистрация
+      isLoginMode: true,
     };
   },
   methods: {
@@ -18,39 +18,34 @@ export default {
       event.preventDefault();
 
       if (this.isLoginMode) {
-        // Логика для логина
         this.$store.dispatch('login', {
           username: this.username,
-          password: this.password
-        });
+          password: this.password,
+          callback: () => {this.$router.push('/')}
+        },
+        );
       } else {
-        // Логика для регистрации
         if (this.password1 !== this.password2) {
           alert('Passwords do not match!');
           return;
         }
         this.$store.dispatch('register', {
-          name: this.name,
           email: this.email,
+          username: this.email,
           password1: this.password1,
-          password2: this.password2
+          password2: this.password2,
+          password: this.password1,
+          callback: () => {this.$router.push('/')},
         });
       }
 
-      // Сброс значений полей после отправки формы
       this.username = '';
       this.password = '';
       this.email = '';
       this.password1 = '';
       this.password2 = '';
-
-      // Редирект на главную страницу после успешного логина или регистрации
-      if (this.$store.getters.isLoggedIn) {
-        this.$router.push('/');
-      }
     },
     toggleMode() {
-      // Переключение между режимами логина и регистрации
       this.isLoginMode = !this.isLoginMode;
     }
   },
