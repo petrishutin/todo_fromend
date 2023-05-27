@@ -1,13 +1,13 @@
 <template>
-  <div>
-    <h3>Your TODOs</h3>
+  <div class="border border-2 rounded p-2">
     <transition-group name="todo-list">
       <TodoItem
-          class="todo"
+          class="todo border border-2"
           v-for="todo in todos"
           :todo="todo"
-          :key="todo.id"
+          :key="todo._id"
           @remove="$emit('remove', todo)"
+          @edit="$emit('edit', todo)"
       />
     </transition-group>
   </div>
@@ -35,10 +35,10 @@ export default {
     flex-direction: column;
     text-align: left;
     align-items: flex-start;
-    border: 2px solid #070760;
     padding: 10px;
     margin-top: 10px;
     justify-content: space-between;
+    border-color: #070760; /* Color of the border */
 }
 .todo-list-move, /* apply transition to moving elements */
 .todo-list-enter-active,

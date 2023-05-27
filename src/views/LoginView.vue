@@ -6,7 +6,6 @@ export default {
     return {
       username: '',
       password: '',
-      name: '',
       email: '',
       password1: '',
       password2: '',
@@ -31,10 +30,8 @@ export default {
         }
         this.$store.dispatch('register', {
           email: this.email,
-          username: this.email,
           password1: this.password1,
           password2: this.password2,
-          password: this.password1,
           callback: () => {this.$router.push('/')},
         });
       }

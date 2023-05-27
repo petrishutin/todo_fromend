@@ -1,19 +1,20 @@
 <template>
   <form class="form" @submit.prevent>
+    <h4>Edit TdDo</h4>
     <app-select
-        v-model="todoStatus"
+        v-model="clonedTodo.status"
         :options="todoStatusOptions"/>
     <app-input
-        v-model="todo.title"
+        v-model="clonedTodo.title"
         type="text"
         placeholder="Title"/>
     <app-input
-        v-model="todo.description"
+        v-model="clonedTodo.description"
         class="content_input"
         type="text"
         placeholder="Description"
     />
-    <button class="btn btn-primary" type="submit" @click="createTodo">Add</button>
+    <button class="btn btn-primary" type="submit" @click="editTodo">Edit</button>
   </form>
 </template>
 
@@ -23,15 +24,11 @@ import axios from "axios";
 
 export default {
   components: {AppInput},
+  props: {
+    todo: Object
+  },
   data() {
     return {
-      todo: {
-        _id: '',
-        status: 'todo',
-        title: '',
-        description: ''
-      },
-      todoStatus: '',
       todoStatusOptions: [
         {value: 'todo', name: 'ToDo'},
         {value: 'in_progress', name: 'In progress'},
@@ -39,31 +36,30 @@ export default {
       ]
     }
   },
+  created() {
+    this.clonedTodo = JSON.parse(JSON.stringify(this.todo))
+  },
   methods: {
-    async createTodo() {
+    async editTodo() {
       try {
-        const response = await axios.post(
-            'http://localhost:8000/api/v1/todo',
-            {'status': this.todo.status, 'title': this.todo.title, 'description': this.todo.description},
+        const response = await axios.put(
+            `http://localhost:8000/api/v1/todo/${this.clonedTodo._id}`,
+            {
+              'status': this.clonedTodo.status,
+              'title': this.clonedTodo.title,
+              'description': this.clonedTodo.description
+            },
             {
               headers: {Authorization: this.$store.state.auth.token}
             }
         )
-        this.todo._id = response.data
-        this.$emit('create', this.todo)
-        this.todo = {
-          status: 'new',
-          title: ''
+        if (response.status === 200) {
+          this.$emit('commitEdit', this.clonedTodo);
         }
       } catch (e) {
-        console.log(e)
+        console.log(e);
       }
-    }
-  },
-  watch: {
-    todoStatus(newStatus) {
-      this.todo.status = newStatus
-    }
+    },
   }
 }
 </script>
