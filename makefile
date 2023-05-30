@@ -1,5 +1,5 @@
 up:
-	docker-compose up --build
+	docker-compose up -d --build
 
 dev_up:
 	docker-compose up backend filestorage mongo
