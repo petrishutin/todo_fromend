@@ -7,6 +7,9 @@ dev_up:
 down:
 	docker-compose down
 
+hurl:
+	hurl --retry -v --file-root . tests.hurl
+
 build_docker_image:
 	docker build --target prod -t petrishutin/todo_frontend:latest .
 
