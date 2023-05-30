@@ -20,13 +20,13 @@ export const authModule = {
   actions: {
     async register({commit}, credentials) {
       try {
-        const response = await axios.post('http://localhost:8000/api/v1/user', credentials);
+        const response = await axios.post(`${process.env.VUE_APP_API_ROOT}user`, credentials);
         if (response.status === 201) {
           try {
             const data = new FormData();
             data.append('username', credentials.email);
             data.append('password', credentials.password1);
-            const response = await axios.post('http://localhost:8000/api/v1/login', data);
+            const response = await axios.post(`${process.env.VUE_APP_API_ROOTT}login`, data);
             if (response.status === 200) {
               commit('setToken', `Bearer ${response.data.access_token}`);
               commit('setLoggedIn', true);
@@ -51,7 +51,7 @@ export const authModule = {
         const data = new FormData();
         data.append('username', credentials.username);
         data.append('password', credentials.password);
-        const response = await axios.post('http://localhost:8000/api/v1/login', data);
+        const response = await axios.post(`${process.env.VUE_APP_API_ROOT}login`, data);
         if (response.status === 200) {
           commit('setToken', `Bearer ${response.data.access_token}`);
           commit('setLoggedIn', true);

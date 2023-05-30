@@ -43,7 +43,7 @@ export default {
     async editTodo() {
       try {
         const response = await axios.put(
-            `http://localhost:8000/api/v1/todo/${this.clonedTodo._id}`,
+            `${process.env.VUE_APP_API_ROOT}todo/${this.clonedTodo._id}`,
             {
               'status': this.clonedTodo.status,
               'title': this.clonedTodo.title,

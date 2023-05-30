@@ -43,7 +43,7 @@ export default {
     async createTodo() {
       try {
         const response = await axios.post(
-            'http://localhost:8000/api/v1/todo',
+            `${process.env.VUE_APP_API_ROOT}todo`,
             {'status': this.todo.status, 'title': this.todo.title, 'description': this.todo.description},
             {
               headers: {Authorization: this.$store.state.auth.token}

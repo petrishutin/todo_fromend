@@ -60,7 +60,7 @@ export default {
       try {
         this.isLoading = true;
         const response = await axios.delete(
-            `http://localhost:8000/api/v1/todo/${todo._id}`,
+            `${process.env.VUE_APP_API_ROOT}todo/${todo._id}`,
             {headers: {Authorization: this.$store.state.auth.token}}
         );
         if (response.status === 204) {
@@ -91,7 +91,7 @@ export default {
     async fetchTodos() {
       this.isLoading = true
       try {
-        const response = await axios.get('http://localhost:8000/api/v1/todo', {
+        const response = await axios.get(`${process.env.VUE_APP_API_ROOT}/todo`, {
           headers: {
             Authorization: this.$store.state.auth.token
           }
