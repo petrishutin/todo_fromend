@@ -1,0 +1,54 @@
+version: '3.8'
+services:
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: ${TARGET:-production-stage}
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    networks:
+      - todo_app_network
+
+  backend:
+    image: petrishutin/todo_backend:latest
+    command: [ '/entrypoint.sh' ]
+    environment:
+      - MONGO_URI=mongodb://mongo:27017
+      - FILE_STORAGE_URL=http://filestorage:8000
+    ports:
+      - "8000:8000"
+    depends_on:
+      - mongo
+      - filestorage
+    networks:
+      - todo_app_network
+
+  filestorage:
+    image: petrishutin/filestorage:latest
+    environment:
+      - FILE_STORAGE_TYPE=LocalFileStorage
+      - BUCKETS=test-1,test-2
+    command: [ '/entrypoint.sh' ]
+    ports:
+      - "8001:8000"
+    volumes:
+      - './.local_file_storage:/var/lib/local_file_storage'
+    depends_on:
+      - mongo
+    networks:
+      - todo_app_network
+
+  mongo:
+    image: mongo:latest
+    ports:
+      - "27117:27017"
+    volumes:
+      - './.mongo:/var/lib/mongo'
+    networks:
+        - todo_app_network
+
+networks:
+    todo_app_network:
