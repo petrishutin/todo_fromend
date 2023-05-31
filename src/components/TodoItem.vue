@@ -1,5 +1,5 @@
 <template>
-  <div class="todo bg-light p-3 mb-2 align-items-center justify-content-start">
+  <div class="todo bg-light p-3 mb-2 align-items-lg-start justify-content-start">
     <div>
       <p class="mb-1">Status: {{ todo.status }}</p>
       <p class="mb-1">Title {{ todo.title }}</p>

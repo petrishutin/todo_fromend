@@ -1,5 +1,29 @@
 import axios from "axios";
 
+const login = async (commit, credentials, callback) => {
+  try {
+    const data = new FormData();
+    data.append('username', credentials.username);
+    data.append('password', credentials.password);
+    const response = await axios.post(`${process.env.VUE_APP_API_ROOT}login`, data);
+    if (response.status === 200) {
+      commit('setToken', `Bearer ${response.data.access_token}`);
+      commit('setLoggedIn', true);
+      if (callback && typeof callback === 'function') {
+        callback();
+      }
+    } else {
+      console.log(response.data);
+      alert(response.data.detail);
+    }
+  } catch (error) {
+    if ('response' in error && 'detail' in error.response.data) {
+      alert(error.response.data.detail);
+    }
+    console.log(error);
+  }
+};
+
 export const authModule = {
   state: {
     isLoggedIn: false,
@@ -18,57 +42,31 @@ export const authModule = {
     }
   },
   actions: {
-    async register({commit}, credentials) {
+    async register({ commit }, credentials) {
       try {
         const response = await axios.post(`${process.env.VUE_APP_API_ROOT}user`, credentials);
         if (response.status === 201) {
-          try {
-            const data = new FormData();
-            data.append('username', credentials.email);
-            data.append('password', credentials.password1);
-            const response = await axios.post(`${process.env.VUE_APP_API_ROOTT}login`, data);
-            if (response.status === 200) {
-              commit('setToken', `Bearer ${response.data.access_token}`);
-              commit('setLoggedIn', true);
-              if (credentials.callback && typeof credentials.callback === 'function') {
-                credentials.callback();
-              }
-            } else {
-              alert(response.data.message);
-            }
-          } catch (error) {
-            console.log(error);
-          }
+          const login_credentials = {
+            username: credentials.email,
+            password: credentials.password1,
+          };
+          await login(commit, login_credentials, credentials.callback);
         } else {
           alert(response.data.message);
         }
       } catch (error) {
-        console.log(error);
-      }
-    },
-    async login({commit}, credentials) {
-      try {
-        const data = new FormData();
-        data.append('username', credentials.username);
-        data.append('password', credentials.password);
-        const response = await axios.post(`${process.env.VUE_APP_API_ROOT}login`, data);
-        if (response.status === 200) {
-          commit('setToken', `Bearer ${response.data.access_token}`);
-          commit('setLoggedIn', true);
-          console.warn(credentials.callback)
-          if (credentials.callback && typeof credentials.callback === 'function') {
-            credentials.callback();
-          }
-        } else {
-          alert(response.data.message);
+        if ('response' in error && 'detail' in error.response.data) {
+          alert(error.response.data.detail);
         }
-      } catch (error) {
         console.log(error);
       }
     },
-    logout({commit}) {
+    async login({ commit }, credentials) {
+      await login(commit, credentials, credentials.callback);
+    },
+    logout({ commit }) {
       commit('setToken', null);
       commit('setLoggedIn', false);
     }
-  },
-}
+  }
+};

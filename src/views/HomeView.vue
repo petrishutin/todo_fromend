@@ -91,7 +91,7 @@ export default {
     async fetchTodos() {
       this.isLoading = true
       try {
-        const response = await axios.get(`${process.env.VUE_APP_API_ROOT}/todo`, {
+        const response = await axios.get(`${process.env.VUE_APP_API_ROOT}todo`, {
           headers: {
             Authorization: this.$store.state.auth.token
           }

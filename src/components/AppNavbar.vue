@@ -19,9 +19,7 @@ export default {
 <template>
   <header class="fixed-top header fixed-top d-flex align-items-center">
     <div class="container-fluid container-xl d-flex align-items-center justify-content-between">
-      <b class="logo d-flex align-items-center">
-        TODO APP
-      </b>
+      <img class="logo" src="@/assets/logo_transparent.png" alt="Logo">
       <i class="bi bi-list mobile-nav-toggle"></i>
     </div>
     <nav v-if="isLoggedIn" class="align-items-end header-nav ms-auto justify-content-end">
